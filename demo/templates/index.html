@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block body %}
+    <style type="text/css">
+        * {
+            background-color: black;
+            text-decoration-color: white;
+            font-family: Helvetica, sans-serif;
+            font-size: xx-large;
+            margin: auto;
+        }
+
+        .button {
+            -webkit-text-fill-color: black;
+            background-color: white;
+            border: none;
+            width: 100% !important;
+            text-align: left;
+        }
+
+        div {
+            -webkit-text-fill-color: white;
+        }
+    </style>
+    <div class="container-fluid my-4">
+        <h3>sick charades app</h3>
+        <form id="add-category-button" action="{{ url_for('demo_bp.addCategory') }}"></form>
+        <button style="background-color: limegreen" type="submit" form="add-category-button" class="button">click to add category</button>
+        <form id="add-word-button" action="{{ url_for('demo_bp.addWord') }}"></form>
+        <button style="background-color: lime" type="submit" form="add-word-button" class="button">click to add word</button>
+        <br>
+        <b>here are all of the categories</b>
+        {% for category in categories %}
+            <div>{{ category.name }}</div>
+        {% endfor %}
+    </div>
+{% endblock %}

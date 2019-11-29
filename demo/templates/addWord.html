@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block body %}
+    <style type="text/css">
+        * {
+            background-color: black;
+            text-decoration-color: white;
+            font-family: Helvetica, sans-serif;
+            font-size: xx-large;
+            margin: auto;
+        }
+
+        .button {
+            -webkit-text-fill-color: black;
+            background-color: white !important;
+            border: none;
+            width: 100% !important;
+            text-align: left;
+        }
+
+        .checkmark {
+            height: 30px;
+            width: 30px;
+        }
+
+        div {
+            -webkit-text-fill-color: white;
+        }
+    </style>
+    <div class="container-fluid my-4" id="add-page">
+        <h3>[[ title ]]</h3>
+        <form id="add-word" name="wordToAdd" action="{{ url_for('demo_bp.addWord') }}" method="post">
+            <b>type the word you wish to add</b><br>
+            <b>be sure to select the correct category</b><br>
+            <b>we'll let you know if it's already there</b><br>
+            {% for c in categories %}
+                <label>
+                {% if loop.index < 2 %}
+                    <input class="checkmark" type="radio" checked="checked" name="category" value="{{ c.id }}">
+                    {{ c.name }}<br>
+                {% elif loop.index > 1 %}
+                    <input class="checkmark" type="radio" name="category" value="{{ c.name }}">
+                    {{ c.name }}<br>
+                {% endif %}
+            {% endfor %}
+            <label>
+                <input @input="updateInputValue" type="text" name="word">
+                <br>
+                <button type="submit" form="add-word" class="button">click to add</button>
+            </label>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#add-page',
+            delimiters: ['[[', ']]'],
+            data: {
+                title: 'sick charades app',
+                input: ''
+            },
+            methods: {
+                updateInputValue(value) {
+                    this.input = value;
+                }
+            }
+
+        })
+    </script>
+{% endblock %}

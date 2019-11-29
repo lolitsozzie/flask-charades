@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block body %}
+    <style type="text/css">
+        * {
+            background-color: black;
+            text-decoration-color: white;
+            font-family: Helvetica, sans-serif;
+            font-size: xx-large;
+            margin: auto;
+        }
+
+        .button {
+            -webkit-text-fill-color: black;
+            background-color: white !important;
+            border: none;
+            width: 100% !important;
+            text-align: left;
+        }
+
+        div {
+            -webkit-text-fill-color: white;
+        }
+    </style>
+    <div class="container-fluid my-4" id="add-page">
+        <h3>[[ title ]]</h3>
+        <form id="add-category" name="categoryToAdd" action="{{ url_for('demo_bp.addCategory') }}" method="post">
+            <b>type the category you wish to add</b><br>
+            <b>we'll let you know if it's already there</b><br>
+            <label>
+                <input @input="updateInputValue" type="text" name="category">
+                <br>
+                <button type="submit" form="add-category" class="button">click to add</button>
+            </label>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#add-page',
+            delimiters: ['[[', ']]'],
+            data: {
+                title: 'sick charades app',
+                input: ''
+            },
+            methods: {
+                updateInputValue(value) {
+                    this.input = value;
+                }
+            }
+
+        })
+    </script>
+{% endblock %}
