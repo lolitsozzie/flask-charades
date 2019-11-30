@@ -29,17 +29,23 @@ def addCategory():
 @demo_bp.route('/addWord', methods=['GET', 'POST'])
 def addWord():
     categories = Category.get_all()
+    sameWord = False
+    correctlyAdded = False
     if request.method == 'POST':
         form_dict = request.form.to_dict()
-        words = Word.get_all()
+        categoryId = int(form_dict['category'])
+        words = [x.text for x in Word.get_all()]
         word = Word(
             text=form_dict['word'],
-            categoryId=int(form_dict['category'])
+            categoryId=categoryId
         )
-        if word not in words:
+        if word.text in words:
+            sameWord = True
+        if word.text not in words:
+            correctlyAdded = True
             db.session.add(word)
             db.session.commit()
-    return render_template('addWord.html', categories=categories)
+    return render_template('addWord.html', categories=categories, sameWord=sameWord, correctlyAdded=correctlyAdded, word=(word.text if word else ''))
 
 
 @demo_bp.route('/viewWords', methods=['GET', 'POST'])
