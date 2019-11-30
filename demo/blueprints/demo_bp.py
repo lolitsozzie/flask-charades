@@ -11,6 +11,7 @@ def index():
     categories = Category.get_all()
     return render_template('index.html', categories=categories)
 
+
 @demo_bp.route('/addCategory', methods=['GET', 'POST'])
 def addCategory():
     if request.method == 'POST':
@@ -23,6 +24,7 @@ def addCategory():
             db.session.add(category)
             db.session.commit()
     return render_template('addCategory.html')
+
 
 @demo_bp.route('/addWord', methods=['GET', 'POST'])
 def addWord():
@@ -38,3 +40,16 @@ def addWord():
             db.session.add(word)
             db.session.commit()
     return render_template('addWord.html', categories=categories)
+
+
+@demo_bp.route('/viewWords', methods=['GET', 'POST'])
+def viewWords():
+    category = 1000
+    categories = Category.get_all()
+    words = Word.get_all()
+    if request.method == 'POST':
+        form_dict = request.form.to_dict()
+        category = int(form_dict['category'])
+        words = [x for x in words if x.categoryId == category]
+        pass
+    return render_template('viewWords.html', categories=categories, words=words, category=category)

@@ -11,7 +11,7 @@
 
         .button {
             -webkit-text-fill-color: black;
-            background-color: white !important;
+            background-color: white;
             border: none;
             width: 100% !important;
             text-align: left;
@@ -26,12 +26,10 @@
             -webkit-text-fill-color: white;
         }
     </style>
-    <div class="container-fluid my-4" id="add-page">
-        <h3>[[ title ]]</h3>
-        <form id="add-word" name="wordToAdd" action="{{ url_for('demo_bp.addWord') }}" method="post">
-            <b>type the word you wish to add</b><br>
-            <b>be sure to select the correct category</b><br>
-            <b>we'll let you know if it's already there</b><br>
+    <div class="container-fluid my-4">
+        <form id="view-words" name="categoryToView" action="{{ url_for('demo_bp.viewWords') }}" method="post">
+            <h3>sick charades app</h3>
+            <b>select a category to view the words</b><br>
             {% for c in categories %}
                 <label>
                 {% if loop.index < 2 %}
@@ -43,30 +41,13 @@
                 {% endif %}
             {% endfor %}
             </label>
-            <div>
-                <input @input="updateInputValue" type="text" name="word">
-                <br>
-                <button type="submit" form="add-word" class="button">click to add</button>
-            </div>
+            <button type="submit" form="view-words" class="button">click to view words</button>
+
+            {% if category < 999 %}
+                {% for word in words %}
+                    <b>{{ word.text }}</b><br>
+                {% endfor %}
+        {% endif %}
         </form>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-    <script>
-        var app = new Vue({
-            el: '#add-page',
-            delimiters: ['[[', ']]'],
-            data: {
-                title: 'sick charades app',
-                input: ''
-            },
-            methods: {
-                updateInputValue(value) {
-                    this.input = value;
-                }
-            }
-
-        })
-    </script>
 {% endblock %}
