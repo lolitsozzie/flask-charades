@@ -24,11 +24,21 @@
     <div class="container-fluid my-4">
         <h3>sick charades app</h3>
         <form id="add-category-button" action="{{ url_for('demo_bp.addCategory') }}"></form>
-        <button style="background-color: green" type="submit" form="add-category-button" class="button">click to add category</button>
+        <button style="background-color: green" type="submit" form="add-category-button" class="button">click to add
+            category
+        </button>
         <form id="add-word-button" action="{{ url_for('demo_bp.addWord') }}"></form>
-        <button style="background-color: limegreen" type="submit" form="add-word-button" class="button">click to add word</button>
+        <button style="background-color: limegreen" type="submit" form="add-word-button" class="button">click to add
+            word
+        </button>
         <form id="view-words-button" action="{{ url_for('demo_bp.viewWords') }}"></form>
-        <button style="background-color: lime" type="submit" form="view-words-button" class="button">click to view words</button>
+        <button style="background-color: lime" type="submit" form="view-words-button" class="button">click to view
+            words
+        </button>
+        <form id="play-button" action="{{ url_for('demo_bp.play') }}"></form>
+        <button style="background-color: yellowgreen" type="submit" form="play-button" class="button">click to play the
+            game
+        </button>
         <br>
         <b>here are all of the categories</b>
         {% for category in categories %}

@@ -38,15 +38,15 @@
             <b>be sure to select the correct category</b><br>
             <b>we'll let you know if it's already there</b>
             {% if sameWord %}
-                <br><b style="background-color: red !important;">the word you entered is already in that category</b>
+                <br><b style="background-color: red !important;">{{ word }} is already in that category</b>
             {% endif %}
             {% if correctlyAdded %}
-                <br><b style="background-color: lime !important;">{{ word }} was added</b>
+                <br><b style="background-color: limegreen !important;">{{ word }} was added</b>
             {% endif %}
             <br>
             {% for c in categories %}
                 <label>
-                {% if loop.index < 2 %}
+                {% if loop.index < 2 or categoryId == c.id %}
                     <input class="checkmark" type="radio" checked="checked" name="category" value="{{ c.id }}">
                     {{ c.name }}<br>
                 {% elif loop.index > 1 %}

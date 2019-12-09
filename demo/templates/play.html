@@ -26,23 +26,18 @@
             -webkit-text-fill-color: white;
         }
     </style>
-    <div class="container-fluid my-4">
-        <form id="view-words" name="categoryToView" action="{{ url_for('demo_bp.viewWords') }}" method="post">
+    <div id="play-page" class="container-fluid my-4">
+        <form id="play-game" name="categoriesToPlay" action="{{ url_for('demo_bp.play') }}" method="post">
             <h3>sick charades app</h3>
             <b>select a category to view the words</b><br>
             {% for c in categories %}
                 <label>
-                {% if loop.index < 2 or c.id == category %}
-                    <input class="checkmark" type="radio" checked="checked" name="category" value="{{ c.id }}">
-                    {{ c.name }}<br>
-                {% elif loop.index > 1 or c.id != category %}
-                    <input class="checkmark" type="radio" name="category" value="{{ c.id }}">
-                    {{ c.name }}<br>
-                {% endif %}
+                <input class="checkmark" type="checkbox" name={{ c.id }} value="{{ c.id }}">
+                {{ c.name }}<br>
             {% endfor %}
             </label>
-            <button type="submit" form="view-words" class="button">click to view words</button>
-
+            <button type="submit" form="play-game" class="button">click to play a game with the selected categories
+            </button>
             {% if category < 999 %}
                 {% for word in words %}
                     <b>{{ word.text }}</b><br>
@@ -50,4 +45,24 @@
             {% endif %}
         </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#play-page',
+            delimiters: ['[[', ']]'],
+            data: {
+                title: 'sick charades app',
+                input: '',
+                words: {{ playWords | safe }}
+            },
+            methods: {
+                updateInputValue(value) {
+                    this.input = value;
+                }
+            }
+
+        })
+    </script>
 {% endblock %}
