@@ -68,17 +68,25 @@ def viewWords():
         pass
     return render_template('viewWords.html', categories=categories, words=words, category=category)
 
+
 @demo_bp.route('/play', methods=['GET', 'POST'])
 def play():
     categories = Category.get_all()
-    playWords = []
+    playWords = None
     words = Word.get_all()
     category = 1000
     if request.method == 'POST':
         form_dict = request.form.to_dict()
         play_categories = [int(x) for x in form_dict.values() if x.isdigit()]
+        playWords = {}
         for x in play_categories:
             for y in words:
-                if y.id == x:
-                    playWords.append(y)
-    return render_template('play.html', category=category, categories=categories, playWords=playWords)
+                if y.categoryId == x:
+                    playWords[y.id] = {
+                        'cat_id': y.categoryId,
+                        'id': y.id,
+                        'text': y.text,
+                        'played': 0
+                    }
+    return render_template('play.html', category=category, categories=categories,
+                           playWords=(json.dumps(playWords) if playWords else None))

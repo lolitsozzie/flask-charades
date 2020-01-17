@@ -27,13 +27,15 @@
         }
     </style>
     <div id="play-page" class="container-fluid my-4">
-        <form id="play-game" name="categoriesToPlay" action="{{ url_for('demo_bp.play') }}" method="post">
+        <form v-if="!playGame" id="play-game" name="categoriesToPlay" action="{{ url_for('demo_bp.play') }}"
+              method="post">
             <h3>sick charades app</h3>
             <b>select a category to view the words</b><br>
             {% for c in categories %}
                 <label>
-                <input class="checkmark" type="checkbox" name={{ c.id }} value="{{ c.id }}">
-                {{ c.name }}<br>
+                <span @click="makeGameList">
+            {{ c.name }}
+            </span>
             {% endfor %}
             </label>
             <button type="submit" form="play-game" class="button">click to play a game with the selected categories
@@ -44,6 +46,19 @@
                 {% endfor %}
             {% endif %}
         </form>
+        <table v-if="words">
+            <tr>
+                <td>category id:</td>
+                <td>word id:</td>
+                <td>word text:</td>
+            </tr>
+            <tr v-for="x in words">
+                <td>[[ x.cat_id ]]</td>
+                <td>[[ x.id ]]</td>
+                <td>[[ x.text ]]</td>
+            </tr>
+        </table>
+        <button v-if="words != null" @click="makeGameList">play game</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -55,11 +70,22 @@
             data: {
                 title: 'sick charades app',
                 input: '',
-                words: {{ playWords | safe }}
+                words: null,
+                playGame: false,
+                playFrame: null
             },
             methods: {
                 updateInputValue(value) {
                     this.input = value;
+                },
+                makeGameList() {
+                    this.playGame = true;
+                    this.words = {{ playWords | safe }};
+                    console.log(this.words);
+                    console.log(this.playGame);
+                    console.log(this.playFrame);
+                    console.log(this.words);
+                    this.playFrame = this.words;
                 }
             }
 
