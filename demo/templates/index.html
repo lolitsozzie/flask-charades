@@ -3,10 +3,7 @@
     <style type="text/css">
         * {
             background-color: black;
-            text-decoration-color: white;
-            font-family: Helvetica, sans-serif;
-            font-size: xx-large;
-            margin: auto;
+            -webkit-text-fill-color: white;
         }
 
         .button {
@@ -21,28 +18,111 @@
             -webkit-text-fill-color: white;
         }
     </style>
-    <div class="container-fluid my-4">
-        <h3>sick charades app</h3>
-        <form id="add-category-button" action="{{ url_for('demo_bp.addCategory') }}"></form>
-        <button style="background-color: green" type="submit" form="add-category-button" class="button">click to add
-            category
-        </button>
-        <form id="add-word-button" action="{{ url_for('demo_bp.addWord') }}"></form>
-        <button style="background-color: limegreen" type="submit" form="add-word-button" class="button">click to add
-            word
-        </button>
-        <form id="view-words-button" action="{{ url_for('demo_bp.viewWords') }}"></form>
-        <button style="background-color: lime" type="submit" form="view-words-button" class="button">click to view
-            words
-        </button>
-        <form id="play-button" action="{{ url_for('demo_bp.play') }}"></form>
-        <button style="background-color: yellowgreen" type="submit" form="play-button" class="button">click to play the
-            game
-        </button>
-        <br>
-        <b>here are all of the categories</b>
-        {% for category in categories %}
-            <div>{{ category.name }}</div>
-        {% endfor %}
+    <div id="home-page" class="container-fluid my-4">
+        <div id="nav-bar">
+            [[ selectedPage ]]
+            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button v-if="selectedPage === 'View'" type="button"
+                            class="btn btn-primary">View
+                    </button>
+                    <button v-else @click="updatePage('View')" type="button" class="btn btn-secondary"> View</button>
+                    <button v-if="selectedPage === 'Add'" type="button"
+                            class="btn btn-primary">Add
+                    </button>
+                    <button v-else @click="updatePage('Add')" type="button" class="btn btn-secondary"> Add</button>
+                    <button v-if="selectedPage === 'Play'" type="button"
+                            class="btn btn-primary">Play
+                    </button>
+                    <button v-else @click="updatePage('Play')" type="button" class="btn btn-secondary"> Play</button>
+                </div>
+            </div>
+        </div>
+        <div v-if="selectedPage === 'View'" id="viewPage">
+            <div>
+                View page
+            </div>
+            <img src="https://media.giphy.com/media/123cG2H4JWnUuk/giphy.gif" alt="">
+            <div class="mapouter">
+                <div class="gmap_canvas">
+                    <iframe width="600" height="500" id="gmap_canvas"
+                            src="https://maps.google.com/maps?q=your%20moms%20house&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                            frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    <a href="https://www.crocothemes.net/divi-discount-code-elegant-themes-coupon/">crocothemes.net</a>
+                </div>
+                <style>.mapouter {
+                    position: relative;
+                    text-align: right;
+                    height: 500px;
+                    width: 600px;
+                }
+
+                .gmap_canvas {
+                    overflow: hidden;
+                    background: none !important;
+                    height: 500px;
+                    width: 600px;
+                }</style>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <td>word:</td>
+                    <td>word id:</td>
+                </tr>
+                </thead>
+                <tbody v-for="category in categoriesObject">
+                <tr>
+                    <td style="-webkit-text-fill-color: red">
+                        [[ category.name ]]
+                    </td>
+                </tr>
+                <tr v-for="word in category.wordList">
+                    <td style="-webkit-text-fill-color: limegreen">
+                        [[ word.word ]]
+                    </td>
+                    <td style="-webkit-text-fill-color: orange">
+                        [[ word.id ]]
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div v-if="selectedPage === 'Add'" id="addPage">
+            <span>
+                Add page
+            </span>
+        </div>
+        <div v-if="selectedPage === 'Play'" id="playPage">
+            <span>
+                Play page
+            </span>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script>
+        var app = new Vue({
+            el: '#home-page',
+            delimiters: ['[[', ']]'],
+            data: {
+                selectedPage: 'View',
+                title: 'sick charades app',
+                input: '',
+                categories: {{ categories | safe }}
+            },
+            methods: {
+                updatePage(value) {
+                    this.selectedPage = value;
+                }
+            },
+            computed: {
+                categoriesObject() {
+                    return this.categories;
+                }
+            }
+
+        })
+    </script>
 {% endblock %}

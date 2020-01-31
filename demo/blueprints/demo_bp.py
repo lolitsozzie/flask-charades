@@ -8,8 +8,24 @@ demo_bp = Blueprint('demo_bp', __name__)
 
 @demo_bp.route('/')
 def index():
-    categories = Category.get_all()
-    return render_template('index.html', categories=categories)
+    # words = dict(Word.get_all())
+    category_objects = Category.get_all()
+    categories = {}
+    words = Word.get_all()
+    for category in category_objects:
+        wordDict = {}
+        for word in words:
+            if(word.categoryId == category.id):
+                wordDict[word.id] = {
+                    'word': word.text,
+                    'id': str(word.id)
+                }
+        categories[category.id] = {
+            'name': str(category.name),
+            'wordList': wordDict
+        }
+
+    return render_template('index.html', categories=json.dumps(categories))
 
 
 @demo_bp.route('/addCategory', methods=['GET', 'POST'])
